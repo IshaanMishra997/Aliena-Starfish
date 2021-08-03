@@ -102,7 +102,7 @@ public class BoundaryModule extends CommandModule {
 		boolean changed = false;
 		for (Boundary boundary : boundary_list)
 			changed |= boundary.update();
-		/*if (changed)*/
+		if (changed)
 			Starfish.domain_module.updateBCvalues();
 			
 	}
