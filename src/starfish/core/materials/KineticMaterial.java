@@ -499,7 +499,8 @@ public class KineticMaterial extends Material {
 					if (seg.getBoundaryType() == BoundaryType.DIRICHLET ||
 					// seg.getBoundaryType() == BoundaryType.VIRTUAL || /*9/2019 disabled virtual
 					// here, not sure why being added, causes particle leaks
-							seg.getBoundaryType() == BoundaryType.SINK)
+							seg.getBoundaryType() == BoundaryType.SINK ||
+							seg.getBoundaryType() == BoundaryType.INSULATOR)
 						segments.add(seg);
 			}
 
