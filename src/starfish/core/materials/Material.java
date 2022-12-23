@@ -152,7 +152,14 @@ public abstract class Material
      *
      */
     protected FieldCollection1D depflux_collection;	/*pointer to depflux for quick access*/  
-	    
+    protected FieldCollection1D qdeprate_collection;	/*pointer to deprate for quick access*/  
+    
+    protected FieldCollection1D qdeprate_collection_inst;    /*instantenous surface deposition data*/
+
+    /**
+     *
+     */
+    protected FieldCollection1D qdepflux_collection;    
     /**
      *
      * @return
@@ -743,6 +750,10 @@ public abstract class Material
 	deprate_collection_inst = field_manager1d.add("deprate-inst", "kg/s");
 	depflux_collection = field_manager1d.add("depflux", "kg/m^2/s");
 	
+	qdeprate_collection = field_manager1d.add("qdeprate", "C/s");
+	qdeprate_collection_inst = field_manager1d.add("qdeprate-inst", "C/s");
+	qdepflux_collection = field_manager1d.add("qdepflux", "C/m^2/s");
+	
 	for (Mesh mesh : Starfish.getMeshList())
 	{
 	    Field2D den = getDen(mesh);
@@ -794,6 +805,24 @@ public abstract class Material
 	Field1D dep_inst = deprate_collection_inst.getField(boundary);
 	dep_inst.scatter(spline_t,spwt);
     }
+    
+    void addSurfaceChargeDeposit(Boundary boundary, double spline_t, double spwt)
+    {
+	if (Starfish.time_module.steady_state && !steady_state)
+	{
+	    deprate_collection.clear();
+	    steady_state = true;
+	    
+	}
+		
+	Field1D qdep = qdeprate_collection.getField(boundary);
+	qdep.scatter(spline_t, spwt);
+	Field1D qdep_inst = qdeprate_collection_inst.getField(boundary);
+	qdep_inst.scatter(spline_t,spwt);
+	//System.out.println("this is being called");
+    }
+    
+    
     
     public void clearInstData(Boundary boundary) { 
 	deprate_collection_inst.getField(boundary).clear();

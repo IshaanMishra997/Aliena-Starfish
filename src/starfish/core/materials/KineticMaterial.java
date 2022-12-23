@@ -314,7 +314,7 @@ public class KineticMaterial extends Material {
 			while (iterator.hasNext()) {
 			
 				//periodically yield to prevent lock up
-				if (++p%25==0) yield();
+				//if (++p%25==0) yield();
 				
 				Particle part = iterator.next();
 
@@ -585,6 +585,8 @@ public class KineticMaterial extends Material {
 			if (!alive) {
 				/* we will multiply by mass in "finish" */
 				addSurfaceMassDeposit(boundary_hit, boundary_t, part.mpw);
+				
+				addSurfaceChargeDeposit(boundary_hit,boundary_t,part.mpw*charge);
 				return alive;
 			}
 		}
